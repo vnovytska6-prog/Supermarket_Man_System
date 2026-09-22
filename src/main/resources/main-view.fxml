@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21.0.6"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="supermarket.controllers.SupermarketController"
+      spacing="15" alignment="TOP_LEFT"
+      prefHeight="800" prefWidth="1200"
+      style="-fx-padding: 20; -fx-background-color: #f8fafc;"
+      stylesheets="@/style.css">
+
+    <!-- Header -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Supermarket Management System" styleClass="header-label"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="statusLabel" text="Ready" styleClass="status-label"/>
+    </HBox>
+
+    <SplitPane dividerPositions="0.3" VBox.vgrow="ALWAYS">
+
+        <!-- Navigation -->
+        <VBox spacing="15" style="-fx-padding: 10;">
+            <!-- Store Structure -->
+            <VBox spacing="10">
+                <Label text="📊 Store Structure" styleClass="section-label"/>
+                <TreeView fx:id="supermarketTree" VBox.vgrow="ALWAYS" styleClass="structure-tree"/>
+            </VBox>
+
+            <!-- Quick Actions -->
+            <VBox spacing="10">
+                <Label text="⚡ Quick Actions" styleClass="section-label"/>
+                <VBox spacing="8">
+                    <Button text="📋 Setup Sample Data" onAction="#setupSampleData" styleClass="action-button"/>
+                    <Button text="📊 View All Stock" onAction="#viewAllStock" styleClass="action-button"/>
+                    <Button text="💾 Save Data" onAction="#saveData" styleClass="action-button"/>
+                    <Button text="📂 Load Data" onAction="#loadData" styleClass="action-button"/>
+                    <Button text="🔄 Reset System" onAction="#resetSystem" styleClass="action-button danger"/>
+                </VBox>
+            </VBox>
+        </VBox>
+
+        <!-- Content -->
+        <VBox spacing="15" style="-fx-padding: 10;" VBox.vgrow="ALWAYS">
+
+            <!-- Information Display -->
+            <VBox spacing="10">
+                <Label text="ℹ️ Information / Reports" styleClass="section-label"/>
+                <TextArea fx:id="displayArea" VBox.vgrow="ALWAYS" styleClass="info-textarea"
+                          wrapText="true" editable="false" prefHeight="350"/>
+            </VBox>
+
+            <!-- TabPane with 2 tabs -->
+            <TabPane VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
+
+                <!-- Tab 1: All Forms -->
+                <Tab text="📝 Forms">
+                    <ScrollPane fitToWidth="true">
+                        <VBox spacing="15" style="-fx-padding: 5;">
+
+                            <!-- Add Floor Area Form -->
+                            <VBox spacing="8" styleClass="form-container">
+                                <Label text="🏬 Add Floor Area" styleClass="form-label"/>
+                                <HBox spacing="10" alignment="CENTER_LEFT">
+                                    <TextField fx:id="floorAreaTitle" promptText="Area Title (e.g., Dairy, Meat)"
+                                               styleClass="form-field" HBox.hgrow="ALWAYS"/>
+                                    <TextField fx:id="floorAreaLevel" promptText="Level (e.g., Ground Floor)"
+                                               styleClass="form-field" HBox.hgrow="ALWAYS"/>
+                                    <Button text="Add Floor Area" onAction="#addFloorArea" styleClass="primary-button"/>
+                                </HBox>
+                            </VBox>
+
+                            <!-- Add Aisle Form -->
+                            <VBox spacing="8" styleClass="form-container">
+                                <Label text="🛒 Add Aisle" styleClass="form-label"/>
+                                <GridPane hgap="10" vgap="8">
+                                    <Label text="Aisle Name" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="field-label"/>
+                                    <TextField fx:id="aisleName" promptText="Unique aisle name" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                                               styleClass="form-field" GridPane.columnSpan="3"/>
+
+                                    <Label text="Floor Area" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="field-label"/>
+                                    <ComboBox fx:id="aisleAreaCombo" promptText="Select floor area" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                                              styleClass="form-combo"/>
+
+                                    <Label text="Length" GridPane.rowIndex="1" GridPane.columnIndex="2" styleClass="field-label"/>
+                                    <TextField fx:id="aisleLength" promptText="meters" GridPane.rowIndex="1" GridPane.columnIndex="3"
+                                               styleClass="form-field"/>
+
+                                    <Label text="Width" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="field-label"/>
+                                    <TextField fx:id="aisleWidth" promptText="meters" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                                               styleClass="form-field"/>
+
+                                    <Label text="Temperature" GridPane.rowIndex="2" GridPane.columnIndex="2" styleClass="field-label"/>
+                                    <ComboBox fx:id="aisleTemperature" promptText="Select temperature" GridPane.rowIndex="2" GridPane.columnIndex="3"
+                                              styleClass="form-combo"/>
+
+                                    <Button text="Add Aisle" onAction="#addAisle" styleClass="primary-button"
+                                            GridPane.rowIndex="3" GridPane.columnIndex="3"/>
+                                </GridPane>
+                            </VBox>
+
+                            <!-- Add Shelf Form -->
+                            <VBox spacing="8" styleClass="form-container">
+                                <Label text="📚 Add Shelf" styleClass="form-label"/>
+                                <HBox spacing="10" alignment="CENTER_LEFT">
+                                    <ComboBox fx:id="shelfAreaCombo" promptText="Select floor area"
+                                              styleClass="form-combo" HBox.hgrow="ALWAYS"/>
+                                    <ComboBox fx:id="shelfAisleCombo" promptText="Select aisle"
+                                              styleClass="form-combo" HBox.hgrow="ALWAYS"/>
+                                    <TextField fx:id="shelfNumber" promptText="Shelf number"
+                                               styleClass="form-field"/>
+                                    <Button text="Add Shelf" onAction="#addShelf" styleClass="primary-button"/>
+                                </HBox>
+                            </VBox>
+
+                            <!-- Add Item Form -->
+                            <VBox spacing="8" styleClass="form-container">
+                                <Label text="📦 Add Item" styleClass="form-label"/>
+                                <GridPane hgap="10" vgap="8">
+                                    <!-- Location -->
+                                    <Label text="Location" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="field-label"/>
+                                    <HBox spacing="10" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="3">
+                                        <ComboBox fx:id="itemAreaCombo" promptText="Floor Area" styleClass="form-combo" HBox.hgrow="ALWAYS"/>
+                                        <ComboBox fx:id="itemAisleCombo" promptText="Aisle" styleClass="form-combo" HBox.hgrow="ALWAYS"/>
+                                        <ComboBox fx:id="itemShelfCombo" promptText="Shelf" styleClass="form-combo" HBox.hgrow="ALWAYS"/>
+                                    </HBox>
+
+                                    <!-- Item Details -->
+                                    <Label text="Description" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="field-label"/>
+                                    <TextField fx:id="itemDescription" promptText="Item description" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                                               styleClass="form-field" GridPane.columnSpan="3"/>
+
+                                    <Label text="Size" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="field-label"/>
+                                    <TextField fx:id="itemSize" promptText="Size in grams/ml" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                                               styleClass="form-field"/>
+
+                                    <Label text="Price" GridPane.rowIndex="2" GridPane.columnIndex="2" styleClass="field-label"/>
+                                    <TextField fx:id="itemPrice" promptText="Unit price" GridPane.rowIndex="2" GridPane.columnIndex="3"
+                                               styleClass="form-field"/>
+
+                                    <Label text="Quantity" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="field-label"/>
+                                    <TextField fx:id="itemQuantity" promptText="Quantity" GridPane.rowIndex="3" GridPane.columnIndex="1"
+                                               styleClass="form-field"/>
+
+                                    <Label text="Temperature" GridPane.rowIndex="3" GridPane.columnIndex="2" styleClass="field-label"/>
+                                    <ComboBox fx:id="itemTemperature" promptText="Storage temp" GridPane.rowIndex="3" GridPane.columnIndex="3"
+                                              styleClass="form-combo"/>
+
+                                    <Label text="Photo URL" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="field-label"/>
+                                    <TextField fx:id="itemPhotoUrl" promptText="https://example.com/photo.jpg"
+                                               GridPane.rowIndex="4" GridPane.columnIndex="1" GridPane.columnSpan="3"
+                                               styleClass="form-field"/>
+
+                                    <HBox spacing="10" GridPane.rowIndex="5" GridPane.columnIndex="1" GridPane.columnSpan="3">
+                                        <Button text="Add Item" onAction="#addGoodItem" styleClass="primary-button" HBox.hgrow="ALWAYS"/>
+                                        <Button text="🧠 Smart Add" onAction="#smartAddItem" styleClass="secondary-button" HBox.hgrow="ALWAYS"/>
+                                    </HBox>
+                                </GridPane>
+                            </VBox>
+
+                            <!-- Search Form -->
+                            <VBox spacing="8" styleClass="form-container">
+                                <Label text="🔍 Search Items" styleClass="form-label"/>
+                                <HBox spacing="10" alignment="CENTER_LEFT">
+                                    <TextField fx:id="searchField" promptText="Enter item name to search..."
+                                               styleClass="form-field" HBox.hgrow="ALWAYS"/>
+                                    <Button text="Search" onAction="#searchItems" styleClass="primary-button"/>
+                                </HBox>
+                            </VBox>
+
+                            <!-- Remove Form -->
+                            <VBox spacing="8" styleClass="form-container">
+                                <Label text="🗑️ Remove Items" styleClass="form-label"/>
+                                <GridPane hgap="10" vgap="8">
+                                    <Label text="Description" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="field-label"/>
+                                    <TextField fx:id="removeItemDesc" promptText="Item description" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                                               styleClass="form-field"/>
+
+                                    <Label text="Size" GridPane.rowIndex="0" GridPane.columnIndex="2" styleClass="field-label"/>
+                                    <TextField fx:id="removeItemSize" promptText="Size" GridPane.rowIndex="0" GridPane.columnIndex="3"
+                                               styleClass="form-field"/>
+
+                                    <Label text="Quantity to Remove" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="field-label"/>
+                                    <TextField fx:id="removeQuantity" promptText="0 = remove all" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                                               styleClass="form-field"/>
+
+                                    <Button text="Remove" onAction="#removeItem" styleClass="danger-button"
+                                            GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+                                </GridPane>
+                            </VBox>
+                            <VBox spacing="8" styleClass="form-container">
+                                <Label text="🗑 Remove Aisle" styleClass="form-label"/>
+                                <HBox spacing="10" alignment="CENTER_LEFT">
+                                    <TextField fx:id="removeAisleField" promptText="Enter aisle name to remove"
+                                               styleClass="form-field" HBox.hgrow="ALWAYS"/>
+                                    <Button text="Remove Aisle" onAction="#removeAisle" styleClass="danger-button"/>
+                                </HBox>
+                            </VBox>
+
+                        </VBox>
+                    </ScrollPane>
+                </Tab>
+
+                <!-- Tab 2: Store Map -->
+                <Tab text="🗺️ Store Map">
+                    <ScrollPane styleClass="map-scrollpane">
+                        <VBox fx:id="storeMap" spacing="10" style="-fx-padding: 10;"/>
+                    </ScrollPane>
+                </Tab>
+
+            </TabPane>
+        </VBox>
+    </SplitPane>
+</VBox>
