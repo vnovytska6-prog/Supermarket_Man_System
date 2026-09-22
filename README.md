@@ -3,6 +3,7 @@
 A Java-based supermarket inventory management application developed as my first Data Structures and Algorithms assignment.
 
 ## Demo
+<img width="1120" height="565" alt="Supermarket_Demo" src="https://github.com/user-attachments/assets/3a847fc9-0269-4b01-9503-20cc0fa8165d" />
 
 
 
